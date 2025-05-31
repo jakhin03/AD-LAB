@@ -1,0 +1,4 @@
+# Nmap 7.94SVN scan initiated Thu May 22 19:17:10 2025 as: nmap -sU -p- --min-rate 10000 -oA nmap/alludp 192.168.198.10
+Host: 192.168.198.10 (192.168.198.10)	Status: Up
+Host: 192.168.198.10 (192.168.198.10)	Ports: 53/open/udp//domain///, 88/open/udp//kerberos-sec///, 123/open/udp//ntp///, 137/open/udp//netbios-ns///	Ignored State: open|filtered (65531)
+# Nmap done at Thu May 22 19:17:24 2025 -- 1 IP address (1 host up) scanned in 13.68 seconds

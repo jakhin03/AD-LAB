@@ -1,0 +1,18 @@
+# Nmap 7.94SVN scan initiated Thu May 22 19:03:10 2025 as: nmap --min-rate 10000 -p- -Pn -oA nmap/allports 192.168.198.10
+Nmap scan report for 192.168.198.10 (192.168.198.10)
+Host is up (0.0021s latency).
+Not shown: 65524 filtered tcp ports (no-response)
+PORT      STATE SERVICE
+53/tcp    open  domain
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+593/tcp   open  http-rpc-epmap
+3268/tcp  open  globalcatLDAP
+3269/tcp  open  globalcatLDAPssl
+49666/tcp open  unknown
+49673/tcp open  unknown
+49676/tcp open  unknown
+49677/tcp open  unknown
+
+# Nmap done at Thu May 22 19:03:37 2025 -- 1 IP address (1 host up) scanned in 26.76 seconds

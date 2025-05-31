@@ -1,0 +1,4 @@
+# Nmap 7.94SVN scan initiated Thu May 22 19:03:10 2025 as: nmap --min-rate 10000 -p- -Pn -oA nmap/allports 192.168.198.10
+Host: 192.168.198.10 (192.168.198.10)	Status: Up
+Host: 192.168.198.10 (192.168.198.10)	Ports: 53/open/tcp//domain///, 135/open/tcp//msrpc///, 139/open/tcp//netbios-ssn///, 445/open/tcp//microsoft-ds///, 593/open/tcp//http-rpc-epmap///, 3268/open/tcp//globalcatLDAP///, 3269/open/tcp//globalcatLDAPssl///, 49666/open/tcp/////, 49673/open/tcp/////, 49676/open/tcp/////, 49677/open/tcp/////	Ignored State: filtered (65524)
+# Nmap done at Thu May 22 19:03:37 2025 -- 1 IP address (1 host up) scanned in 26.76 seconds

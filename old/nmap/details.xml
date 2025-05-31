@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.94SVN scan initiated Thu May 22 19:03:40 2025 as: nmap -sC -sV -A -oA nmap/details -p 53,135,139,445,593,3268,3269,49666,49673,49676,49677, 192.168.198.10 -->
+<nmaprun scanner="nmap" args="nmap -sC -sV -A -oA nmap/details -p 53,135,139,445,593,3268,3269,49666,49673,49676,49677, 192.168.198.10" start="1747915420" startstr="Thu May 22 19:03:40 2025" version="7.94SVN" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="11" services="53,135,139,445,593,3268-3269,49666,49673,49676-49677"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="192.168.198.10" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1747915421" endtime="1747915519"><status state="up" reason="echo-reply" reason_ttl="127"/>
+<address addr="192.168.198.10" addrtype="ipv4"/>
+<hostnames>
+<hostname name="192.168.198.10" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="53"><state state="open" reason="syn-ack" reason_ttl="127"/><service name="domain" product="Simple DNS Plus" ostype="Windows" method="probed" conf="10"><cpe>cpe:/a:jh_software:simple_dns_plus</cpe><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="135"><state state="open" reason="syn-ack" reason_ttl="127"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="139"><state state="open" reason="syn-ack" reason_ttl="127"/><service name="netbios-ssn" product="Microsoft Windows netbios-ssn" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="445"><state state="open" reason="syn-ack" reason_ttl="127"/><service name="microsoft-ds" method="table" conf="3"/></port>
+<port protocol="tcp" portid="593"><state state="open" reason="syn-ack" reason_ttl="127"/><service name="ncacn_http" product="Microsoft Windows RPC over HTTP" version="1.0" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="3268"><state state="open" reason="syn-ack" reason_ttl="127"/><service name="ldap" product="Microsoft Windows Active Directory LDAP" extrainfo="Domain: vdt.local0., Site: Default-First-Site-Name" hostname="VDT-DC01" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="3269"><state state="open" reason="syn-ack" reason_ttl="127"/><service name="tcpwrapped" method="probed" conf="8"/></port>
+<port protocol="tcp" portid="49666"><state state="open" reason="syn-ack" reason_ttl="127"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49673"><state state="open" reason="syn-ack" reason_ttl="127"/><service name="ncacn_http" product="Microsoft Windows RPC over HTTP" version="1.0" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49676"><state state="open" reason="syn-ack" reason_ttl="127"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49677"><state state="open" reason="syn-ack" reason_ttl="127"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+</ports>
+<os><portused state="open" proto="tcp" portid="53"/>
+<osmatch name="Microsoft Windows Server 2019" accuracy="97" line="108162">
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="2019" accuracy="97"/>
+</osmatch>
+</os>
+<distance value="2"/>
+<tcpsequence index="264" difficulty="Good luck!" values="E42B573C,587EAEDF,DA1DF9F3,DC97E4AE,A079E929,4393BF17"/>
+<ipidsequence class="Incremental" values="BEE4,BEE5,BEE6,BEE7,BEE8,BEE9"/>
+<tcptssequence class="none returned (unsupported)"/>
+<hostscript><script id="smb2-security-mode" output="&#xa;  3:1:1: &#xa;    Message signing enabled and required"><table key="3:1:1">
+<elem>Message signing enabled and required</elem>
+</table>
+</script><script id="nbstat" output="NetBIOS name: VDT-DC01, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:0c:29:ac:78:1d (VMware)"/><script id="clock-skew" output="-1s"><elem key="median">-1</elem>
+<elem key="count">1</elem>
+<elem key="mean">-1</elem>
+<elem key="stddev">0</elem>
+</script><script id="smb2-time" output="&#xa;  date: 2025-05-22T12:04:38&#xa;  start_date: N/A"><elem key="date">2025-05-22T12:04:38</elem>
+<elem key="start_date">N/A</elem>
+</script></hostscript><trace port="135" proto="tcp">
+<hop ttl="1" ipaddr="172.21.144.1" rtt="1.76" host="172.21.144.1"/>
+<hop ttl="2" ipaddr="192.168.198.10" rtt="2.80" host="192.168.198.10"/>
+</trace>
+<times srtt="1387" rttvar="1069" to="100000"/>
+</host>
+<runstats><finished time="1747915519" timestr="Thu May 22 19:05:19 2025" summary="Nmap done at Thu May 22 19:05:19 2025; 1 IP address (1 host up) scanned in 98.55 seconds" elapsed="98.55" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

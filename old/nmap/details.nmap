@@ -1,0 +1,41 @@
+# Nmap 7.94SVN scan initiated Thu May 22 19:03:40 2025 as: nmap -sC -sV -A -oA nmap/details -p 53,135,139,445,593,3268,3269,49666,49673,49676,49677, 192.168.198.10
+Nmap scan report for 192.168.198.10 (192.168.198.10)
+Host is up (0.0014s latency).
+
+PORT      STATE SERVICE       VERSION
+53/tcp    open  domain        Simple DNS Plus
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: vdt.local0., Site: Default-First-Site-Name)
+3269/tcp  open  tcpwrapped
+49666/tcp open  msrpc         Microsoft Windows RPC
+49673/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49676/tcp open  msrpc         Microsoft Windows RPC
+49677/tcp open  msrpc         Microsoft Windows RPC
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose
+Running (JUST GUESSING): Microsoft Windows 2019 (97%)
+Aggressive OS guesses: Microsoft Windows Server 2019 (97%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 2 hops
+Service Info: Host: VDT-DC01; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled and required
+|_nbstat: NetBIOS name: VDT-DC01, NetBIOS user: <unknown>, NetBIOS MAC: 00:0c:29:ac:78:1d (VMware)
+|_clock-skew: -1s
+| smb2-time: 
+|   date: 2025-05-22T12:04:38
+|_  start_date: N/A
+
+TRACEROUTE (using port 135/tcp)
+HOP RTT     ADDRESS
+1   1.76 ms 172.21.144.1 (172.21.144.1)
+2   2.80 ms 192.168.198.10 (192.168.198.10)
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu May 22 19:05:19 2025 -- 1 IP address (1 host up) scanned in 98.55 seconds

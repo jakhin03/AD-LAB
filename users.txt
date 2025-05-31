@@ -1,0 +1,12 @@
+Administrator
+Guest
+krbtgt
+DC01
+DC01$
+dev01
+admin_linux
+admin_service
+SRV01$
+WS01$
+LX01$
+dev02
