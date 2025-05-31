@@ -1,6 +1,7 @@
 # Information:
 
-
+## Attack flow
+![Attack flow graph](../assets/attack_flow_old.png)
 # Recon
 ## Nmap
 ### TCP ports
